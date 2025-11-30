@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:module18_19/ui/screens/add_new_task.dart';
-import 'package:module18_19/ui/screens/forget_password_email.dart';
-import 'package:module18_19/ui/screens/forget_password_otp_verification.dart';
-import 'package:module18_19/ui/screens/main_bottom_nav_holder_screen.dart';
-import 'package:module18_19/ui/screens/reset_password.dart';
-import 'package:module18_19/ui/screens/sign_in_screen.dart';
-import 'package:module18_19/ui/screens/sign_up_screen.dart';
-import 'package:module18_19/ui/screens/splash_screen.dart';
-import 'package:module18_19/ui/screens/update_profile.dart';
+
+import 'screens/add_new_task.dart';
+import 'screens/forget_password_email.dart';
+import 'screens/forget_password_otp_verification.dart';
+import 'screens/main_bottom_nav_holder_screen.dart';
+import 'screens/reset_password.dart';
+import 'screens/sign_in_screen.dart';
+import 'screens/sign_up_screen.dart';
+import 'screens/splash_screen.dart';
+import 'screens/update_profile.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

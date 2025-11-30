@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:module18_19/ui/widgets/photo_picker.dart';
-import 'package:module18_19/ui/widgets/screen_background.dart';
-import 'package:module18_19/ui/widgets/tm_app_bar.dart';
+import '../widgets/photo_picker.dart';
+import '../widgets/screen_background.dart';
+import '../widgets/tm_app_bar.dart';
+
 
 class UpdateProfile extends StatefulWidget {
   const UpdateProfile({super.key});

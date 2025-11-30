@@ -1,9 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:module18_19/ui/screens/reset_password.dart';
-import 'package:module18_19/ui/screens/sign_in_screen.dart';
-import 'package:module18_19/ui/widgets/screen_background.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import '../widgets/screen_background.dart';
+import 'reset_password.dart';
+import 'sign_in_screen.dart';
+
 
 class OtpVerification extends StatefulWidget {
   const OtpVerification({super.key});

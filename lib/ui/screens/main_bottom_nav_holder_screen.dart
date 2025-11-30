@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:module18_19/ui/screens/canceled_task_list_screen.dart';
-import 'package:module18_19/ui/screens/completed_task_list_screen.dart';
-import 'package:module18_19/ui/screens/new_task_list_screen.dart';
-import 'package:module18_19/ui/screens/progress_task_list_screen.dart';
-import 'package:module18_19/ui/widgets/tm_app_bar.dart';
+import '../widgets/tm_app_bar.dart';
+import 'canceled_task_list_screen.dart';
+import 'completed_task_list_screen.dart';
+import 'new_task_list_screen.dart';
+import 'progress_task_list_screen.dart';
+
 
 class MainBottomNav extends StatefulWidget {
   const MainBottomNav({super.key});

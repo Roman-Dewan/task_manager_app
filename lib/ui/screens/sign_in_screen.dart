@@ -1,13 +1,14 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:module18_19/data/services/network_caller.dart';
-import 'package:module18_19/data/utils/urls.dart';
-import 'package:module18_19/ui/screens/forget_password_email.dart';
-import 'package:module18_19/ui/screens/main_bottom_nav_holder_screen.dart';
-import 'package:module18_19/ui/screens/sign_up_screen.dart';
-import 'package:module18_19/ui/widgets/screen_background.dart';
-import 'package:module18_19/ui/widgets/show_snackbar.dart';
+import '../../data/services/network_caller.dart';
+import '../../data/utils/urls.dart';
+import '../widgets/screen_background.dart';
+import '../widgets/show_snackbar.dart';
+import 'forget_password_email.dart';
+import 'main_bottom_nav_holder_screen.dart';
+import 'sign_up_screen.dart';
+
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});

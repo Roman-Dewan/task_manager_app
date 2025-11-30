@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:module18_19/ui/screens/add_new_task.dart';
-import 'package:module18_19/ui/widgets/task_card.dart';
+import '../widgets/task_card.dart';
+import 'add_new_task.dart';
+
 
 class NewTaskListScreen extends StatefulWidget {
   const NewTaskListScreen({super.key});
