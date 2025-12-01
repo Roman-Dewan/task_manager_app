@@ -1,6 +1,8 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:task_manage_updated/data/models/user_model.dart';
+import 'package:task_manage_updated/ui/controller/auth_controller.dart';
 import '../../data/services/network_caller.dart';
 import '../../data/utils/urls.dart';
 import '../widgets/screen_background.dart';
@@ -8,7 +10,6 @@ import '../widgets/show_snackbar.dart';
 import 'forget_password_email.dart';
 import 'main_bottom_nav_holder_screen.dart';
 import 'sign_up_screen.dart';
-
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -135,6 +136,9 @@ class _SignInScreenState extends State<SignInScreen> {
     _signInProgress = false;
     setState(() {});
     if (response.isSuccess) {
+      UserModel userModel = UserModel.fromJson(response.body['data']);
+      String accessToken = response.body['token'];
+      await AuthController.saveUserData(accessToken, userModel);
       // _clearText();
       Navigator.pushNamedAndRemoveUntil(
         context,

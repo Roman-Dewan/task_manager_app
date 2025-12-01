@@ -112,7 +112,7 @@ class NetworkCaller {
         return NetworkResponse(
           isSuccess: true,
           statusCode: response.statusCode,
-          data: decodedData,
+          body: decodedData,
         );
       } else {
         return NetworkResponse(
@@ -148,7 +148,7 @@ class NetworkCaller {
         return NetworkResponse(
           isSuccess: true,
           statusCode: response.statusCode,
-          data: decodedData,
+          body: decodedData,
         );
       } else {
         return NetworkResponse(
@@ -180,13 +180,13 @@ class NetworkCaller {
 class NetworkResponse {
   final bool isSuccess;
   final int statusCode;
-  final dynamic data;
+  final dynamic body;
   final String error;
 
   NetworkResponse({
     required this.isSuccess,
     required this.statusCode,
-    this.data,
+    this.body,
     this.error = "Something Went Wrong",
   });
 }

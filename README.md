@@ -1,6 +1,6 @@
-# blood_donation_app
+#Task Manager App
 
-creating blood donation app to serve the bangladeshi people
+This app helps people to track their daily task and monitoring it.
 
 ## Getting Started
 
