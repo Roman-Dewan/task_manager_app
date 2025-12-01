@@ -21,9 +21,15 @@ class AuthController {
     String? token = sharedPreferences.getString(_tokenKey);
     if (token != null) {
       accessToken = token;
-      user = UserModel.fromJson(jsonDecode(
-        sharedPreferences.getString(_userKey)!
-      ));
+      user = UserModel.fromJson(
+        jsonDecode(sharedPreferences.getString(_userKey)!),
+      );
     }
+  }
+
+  static Future<bool> isUserLoggedIn() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? token = sharedPreferences.getString(_tokenKey);
+    return (token != null);
   }
 }
