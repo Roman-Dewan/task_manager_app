@@ -139,12 +139,13 @@ class _SignInScreenState extends State<SignInScreen> {
       UserModel userModel = UserModel.fromJson(response.body['data']);
       String accessToken = response.body['token'];
       await AuthController.saveUserData(accessToken, userModel);
-      // _clearText();
       Navigator.pushNamedAndRemoveUntil(
+        // ignore: use_build_context_synchronously
         context,
         MainBottomNav.name,
         (predicate) => false,
       );
+      // ignore: use_build_context_synchronously
       showSnackBar(context, "LogIn Successful.");
     } else {
       showSnackBar(context, response.error);

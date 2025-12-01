@@ -26,8 +26,12 @@ class _SplashScreenState extends State<SplashScreen> {
     bool isLoggedIn = await AuthController.isUserLoggedIn();
     if (context.mounted) {
       if (isLoggedIn) {
-        // ignore: use_build_context_synchronously
-        Navigator.pushReplacementNamed(context, MainBottomNav.name);
+        Navigator.pushNamedAndRemoveUntil(
+          // ignore: use_build_context_synchronously
+          context,
+          MainBottomNav.name,
+          (predicate) => false,
+        );
       } else {
         // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, SignInScreen.name);

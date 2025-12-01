@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:task_manage_updated/ui/controller/auth_controller.dart';
+import 'package:task_manage_updated/ui/screens/sign_in_screen.dart';
+import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
 import '../screens/update_profile.dart';
 
 class TMappBar extends StatelessWidget implements PreferredSizeWidget {
@@ -39,6 +42,22 @@ class TMappBar extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
       ),
+      actions: [
+        IconButton(
+          onPressed: () async {
+            await AuthController.clearUserData();
+            Navigator.pushNamedAndRemoveUntil(
+              // ignore: use_build_context_synchronously
+              context,
+              SignInScreen.name,
+              (predicate) => false,
+            );
+            // ignore: use_build_context_synchronously
+            showSnackBar(context, "Logout Successful!!");
+          },
+          icon: Icon(Icons.logout),
+        ),
+      ],
     );
   }
 
