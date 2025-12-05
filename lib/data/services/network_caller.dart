@@ -10,10 +10,16 @@ class NetworkCaller {
       Uri uri = Uri.parse(url);
       _logRequest(url);
 
+      // missing check
+      if (AuthController.accessToken == null) {
+        await AuthController.getUserData();
+      }
+
       Response response = await get(
         uri,
         headers: {'token': AuthController.accessToken ?? ''},
       );
+
       _logResponse(url, response);
       final decodedData = jsonDecode(response.body);
 
@@ -53,7 +59,7 @@ class NetworkCaller {
     try {
       Uri uri = Uri.parse(url);
       _logRequest(url, body: body);
-      
+
       // If the static token is null (due to app restart), try to load it from disk
       if (AuthController.accessToken == null) {
         await AuthController.getUserData();
@@ -99,13 +105,6 @@ class NetworkCaller {
     }
   }
 
-  // Future<void> _onUnAuthorized() async {
-  //   await AuthController.clearUserData();
-  //   Navigator.pushNamed(
-  //     TaskManagerApp.NavigatorKey.currentIndex!,
-  //     SignInScreen.name,
-  //   );
-  // }
 
   static void _logRequest(String url, {Map<String, dynamic>? body}) {
     debugPrint(
@@ -117,7 +116,8 @@ class NetworkCaller {
   static void _logResponse(String url, Response response) {
     debugPrint(
       "Url: $url\n"
-      "response: ${response.statusCode}",
+      "response: ${response.statusCode}"
+      "Body: ${response.body}",
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/task_card.dart';
+// import '../widgets/task_card.dart';
 
 
 class ProgressTaskListScreen extends StatefulWidget {
@@ -24,7 +24,9 @@ class _ProgressTaskListScreenState extends State<ProgressTaskListScreen> {
               physics: NeverScrollableScrollPhysics(),
               itemCount: 8,
               itemBuilder: (context, index) {
-                return TaskCard();
+                return null;
+              
+                // return TaskCard();
               },
               separatorBuilder: (context, index) {
                 return SizedBox(height: 8);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/task_card.dart';
+// import '../widgets/task_card.dart';
 
 
 class CanceledTaskListScreen extends StatefulWidget {
@@ -22,7 +22,9 @@ class _NewTaskListScreenState extends State<CanceledTaskListScreen> {
               physics: NeverScrollableScrollPhysics(),
               itemCount: 8,
               itemBuilder: (context, index) {
-                return TaskCard();
+                return null;
+              
+                // return TaskCard();
               },
               separatorBuilder: (context, index) {
                 return SizedBox(height: 8);

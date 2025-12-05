@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/task_card.dart';
+// import '../widgets/task_card.dart';
 
 class CompletedTaskListScreen extends StatefulWidget {
   const CompletedTaskListScreen({super.key});
@@ -23,7 +23,9 @@ class _CompletedTaskListScreenState extends State<CompletedTaskListScreen> {
               physics: NeverScrollableScrollPhysics(),
               itemCount: 8,
               itemBuilder: (context, index) {
-                return TaskCard();
+                return null;
+              
+                // return TaskCard();
               },
               separatorBuilder: (context, index) {
                 return SizedBox(height: 8);
