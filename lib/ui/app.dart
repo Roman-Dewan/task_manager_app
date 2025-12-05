@@ -86,6 +86,7 @@ class MyApp extends StatelessWidget {
         UpdateProfile.name: (context) => const UpdateProfile(),
       },
       initialRoute: SplashScreen.name,
+      debugShowCheckedModeBanner: false,
 
       home: SplashScreen(),
     );
