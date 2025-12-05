@@ -27,7 +27,7 @@ class NetworkCaller {
         return NetworkResponse(
           isSuccess: false,
           statusCode: response.statusCode,
-          error: "Un-othorized",
+          error: "Un-authorized",
         );
       } else {
         return NetworkResponse(
@@ -53,6 +53,11 @@ class NetworkCaller {
     try {
       Uri uri = Uri.parse(url);
       _logRequest(url, body: body);
+      
+      // If the static token is null (due to app restart), try to load it from disk
+      if (AuthController.accessToken == null) {
+        await AuthController.getUserData();
+      }
 
       Response response = await post(
         uri,
@@ -76,7 +81,7 @@ class NetworkCaller {
         return NetworkResponse(
           isSuccess: false,
           statusCode: response.statusCode,
-          error: "Un-othorized",
+          error: "Un-Authorized",
         );
       } else {
         return NetworkResponse(
