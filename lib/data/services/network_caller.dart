@@ -23,6 +23,12 @@ class NetworkCaller {
           statusCode: response.statusCode,
           body: decodedData,
         );
+      } else if (response.statusCode == 401) {
+        return NetworkResponse(
+          isSuccess: false,
+          statusCode: response.statusCode,
+          error: "Un-othorized",
+        );
       } else {
         return NetworkResponse(
           isSuccess: false,
@@ -66,6 +72,12 @@ class NetworkCaller {
           statusCode: response.statusCode,
           body: decodedData,
         );
+      } else if (response.statusCode == 401) {
+        return NetworkResponse(
+          isSuccess: false,
+          statusCode: response.statusCode,
+          error: "Un-othorized",
+        );
       } else {
         return NetworkResponse(
           isSuccess: false,
@@ -81,6 +93,14 @@ class NetworkCaller {
       );
     }
   }
+
+  // Future<void> _onUnAuthorized() async {
+  //   await AuthController.clearUserData();
+  //   Navigator.pushNamed(
+  //     TaskManagerApp.NavigatorKey.currentIndex!,
+  //     SignInScreen.name,
+  //   );
+  // }
 
   static void _logRequest(String url, {Map<String, dynamic>? body}) {
     debugPrint(
