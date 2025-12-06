@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:task_manage_updated/ui/widgets/centered_progress_indicator.dart';
+import 'package:task_manage_updated/ui/widgets/task_card.dart';
+
+import '../../data/models/task_model.dart';
+import '../../data/services/network_caller.dart';
+import '../../data/utils/urls.dart';
+import '../widgets/show_snackbar.dart';
 // import '../widgets/task_card.dart';
 
 class ProgressTaskListScreen extends StatefulWidget {
@@ -9,64 +16,62 @@ class ProgressTaskListScreen extends StatefulWidget {
 }
 
 class _ProgressTaskListScreenState extends State<ProgressTaskListScreen> {
+  bool _getProgressTaskListInProgress = false;
+  List<TaskModel> _progressTaskList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getProgressTaskList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          spacing: 8,
-          children: [
-            const SizedBox(),
-            _buildTaskSummaryListView(),
-            ListView.separated(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 8,
-              itemBuilder: (context, index) {
-                return null;
-
-                // return TaskCard();
+      body: Visibility(
+        visible: _getProgressTaskListInProgress == false,
+        replacement: CenteredProgressIndicator(),
+        child: ListView.separated(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: _progressTaskList.length,
+          itemBuilder: (context, index) {
+            return TaskCard(
+              taskModel: _progressTaskList[index],
+              refreshList: () {
+                _getProgressTaskList();
               },
-              separatorBuilder: (context, index) {
-                return SizedBox(height: 8);
-              },
-            ),
-          ],
+            );
+          },
+          separatorBuilder: (context, index) {
+            return SizedBox(height: 8);
+          },
         ),
       ),
     );
   }
 
-  // top locator bar under appbar.
-  Widget _buildTaskSummaryListView() {
-    return SizedBox(
-      height: 60,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 8,
-        itemBuilder: (context, index) {
-          return Card(
-            color: Colors.white,
-            elevation: 0,
-            margin: EdgeInsets.only(left: 8),
-
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Column(
-                children: [
-                  Text(
-                    "12",
-                    style: Theme.of(
-                      context,
-                    ).textTheme.titleMedium?.copyWith(color: Colors.black),
-                  ),
-                  Text("New", style: Theme.of(context).textTheme.labelLarge),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+  Future<void> _getProgressTaskList() async {
+    _getProgressTaskListInProgress = true;
+    setState(() {});
+    final NetworkResponse response = await NetworkCaller.getRequest(
+      Urls.progressTaskListUrl,
     );
+
+    if (!mounted) return;
+    if (response.isSuccess) {
+      List<TaskModel> list = [];
+
+      for (Map<String, dynamic> jsonData in response.body['data']) {
+        list.add(TaskModel.fromJson(jsonData));
+      }
+
+      _progressTaskList = list;
+    } else {
+      showSnackBar(context, response.error);
+    }
+
+    _getProgressTaskListInProgress = false;
+    setState(() {});
   }
 }
