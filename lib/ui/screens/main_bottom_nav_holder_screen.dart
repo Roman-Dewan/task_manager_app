@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import '../widgets/tm_app_bar.dart';
-import 'canceled_task_list_screen.dart';
+import 'cancelled_task_list_screen.dart';
 import 'completed_task_list_screen.dart';
 import 'new_task_list_screen.dart';
 import 'progress_task_list_screen.dart';
-
 
 class MainBottomNav extends StatefulWidget {
   const MainBottomNav({super.key});
@@ -17,8 +16,8 @@ class _MainBottomNavState extends State<MainBottomNav> {
   int _selectedIndex = 0;
   List<Widget> screens = [
     NewTaskListScreen(),
-    CanceledTaskListScreen(),
     ProgressTaskListScreen(),
+    CancelledTaskListScreen(),
     CompletedTaskListScreen(),
   ];
   @override
@@ -41,7 +40,7 @@ class _MainBottomNavState extends State<MainBottomNav> {
           ),
           NavigationDestination(
             icon: Icon(Icons.cancel_outlined),
-            label: "Canceled",
+            label: "Cancelled",
           ),
           NavigationDestination(icon: Icon(Icons.done), label: "Completed"),
         ],

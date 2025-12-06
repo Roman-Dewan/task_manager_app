@@ -24,8 +24,8 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
 
   @override
   void initState() {
-    newTaskList();
-    taskCountList();
+    _getNewTaskList();
+    _getTaskCountList();
     super.initState();
   }
 
@@ -50,7 +50,13 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: _newTaskList.length,
                 itemBuilder: (context, index) {
-                  return TaskCard(taskModel: _newTaskList[index]);
+                  return TaskCard(
+                    taskModel: _newTaskList[index],
+                    refreshList: () {
+                      _getNewTaskList();
+                      _getTaskCountList();
+                    },
+                  );
                 },
                 separatorBuilder: (context, index) {
                   return SizedBox(height: 8);
@@ -115,7 +121,7 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
   }
 
   // new task list
-  Future<void> newTaskList() async {
+  Future<void> _getNewTaskList() async {
     _getNewTaskListInProgress = true;
     setState(() {});
     final NetworkResponse response = await NetworkCaller.getRequest(
@@ -140,7 +146,7 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
   }
 
   // task value count
-  Future<void> taskCountList() async {
+  Future<void> _getTaskCountList() async {
     _taskCountInProgress = true;
 
     setState(() {});
