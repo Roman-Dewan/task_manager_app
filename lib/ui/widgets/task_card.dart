@@ -46,7 +46,7 @@ class _TaskCardState extends State<TaskCard> {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: _getColor(widget.taskModel.status),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Text(widget.taskModel.status),
@@ -151,5 +151,20 @@ class _TaskCardState extends State<TaskCard> {
     Navigator.pop(context);
     setState(() {});
     _getChangeStatus(status);
+  }
+
+  Color _getColor(String status) {
+    switch (status) {
+      case 'New':
+        return Colors.blue;
+      case 'Progress':
+        return Colors.amber;
+      case 'Cancelled':
+        return Colors.red;
+      case 'Completed':
+        return Colors.green;
+      default:
+        return Colors.pink;
+    }
   }
 }
