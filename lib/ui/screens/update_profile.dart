@@ -7,6 +7,7 @@ import 'package:task_manage_updated/data/models/user_model.dart';
 import 'package:task_manage_updated/data/services/network_caller.dart';
 import 'package:task_manage_updated/data/utils/urls.dart';
 import 'package:task_manage_updated/ui/controller/auth_controller.dart';
+import 'package:task_manage_updated/ui/widgets/centered_progress_indicator.dart';
 import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
 import '../widgets/photo_picker.dart';
 import '../widgets/screen_background.dart';
@@ -122,9 +123,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   ),
 
                   const SizedBox(height: 8),
-                  FilledButton(
-                    onPressed: _onTapUpdateProfile,
-                    child: Icon(Icons.arrow_circle_right_outlined, size: 30),
+                  Visibility(
+                    visible: _updateProfileInProgress == false,
+                    replacement: CenteredProgressIndicator(),
+                    child: FilledButton(
+                      onPressed: _onTapUpdateProfile,
+                      child: Icon(Icons.arrow_circle_right_outlined, size: 30),
+                    ),
                   ),
                 ],
               ),
@@ -176,10 +181,14 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
     if (!mounted) return;
     if (response.isSuccess) {
+      requestBody["_id"] = AuthController.user!.id;
       showSnackBar(context, "Profile has been updated!");
       await AuthController.updateProfileData(UserModel.fromJson(requestBody));
     } else {
       showSnackBar(context, response.error);
     }
+
+     _updateProfileInProgress = false;
+    setState(() {});
   }
 }
