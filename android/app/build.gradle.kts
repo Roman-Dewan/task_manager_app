@@ -42,3 +42,15 @@ android {
 flutter {
     source = "../.."
 }
+
+// --- FIX ADDED BELOW ---
+// This block forces the conflicting library to use a version compatible with your AGP.
+configurations.all {
+    resolutionStrategy {
+        eachDependency {
+            if (requested.group == "androidx.activity") {
+                useVersion("1.10.1")
+            }
+        }
+    }
+}
