@@ -4,6 +4,7 @@ class UserModel {
   final String firstName;
   final String lastName;
   final String mobiile;
+  final String photo;
 
   String get fullName{
     return "$firstName $lastName";
@@ -15,6 +16,7 @@ class UserModel {
     required this.firstName,
     required this.lastName,
     required this.mobiile,
+    required this.photo
   });
 
   // json to data
@@ -25,6 +27,7 @@ class UserModel {
       firstName: jsonData['firstName'],
       lastName: jsonData['lastName'],
       mobiile: jsonData['mobile'],
+      photo: jsonData['photo'] ?? ''
     );
   }
 
@@ -36,6 +39,7 @@ class UserModel {
       "firstName": firstName,
       "lastName": lastName,
       "mobile": mobiile,
+      "photo": photo
     };
   }
 }

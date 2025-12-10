@@ -171,7 +171,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
     }
     if (_pickedImage != null) {
       Uint8List imageBytes = await _pickedImage!.readAsBytes();
-      requestBody['photo'] = jsonEncode(imageBytes);
+      requestBody['photo'] = base64Encode(imageBytes);
     }
 
     final NetworkResponse response = await NetworkCaller.postRequest(
