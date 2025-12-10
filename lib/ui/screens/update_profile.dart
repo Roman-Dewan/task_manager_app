@@ -1,6 +1,13 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:task_manage_updated/data/models/user_model.dart';
+import 'package:task_manage_updated/data/services/network_caller.dart';
+import 'package:task_manage_updated/data/utils/urls.dart';
 import 'package:task_manage_updated/ui/controller/auth_controller.dart';
+import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
 import '../widgets/photo_picker.dart';
 import '../widgets/screen_background.dart';
 import '../widgets/tm_app_bar.dart';
@@ -18,10 +25,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
   final TextEditingController _lastNameTEController = TextEditingController();
   final TextEditingController _mobileTEController = TextEditingController();
   final TextEditingController _passwordTEController = TextEditingController();
-  final TextEditingController _confirmPasswordTEController =
-      TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final ImagePicker _imagePicker = ImagePicker();
+  XFile? _pickedImage;
+  bool _updateProfileInProgress = false;
 
   @override
   void initState() {
@@ -58,7 +66,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   SizedBox(height: 2),
 
                   GestureDetector(
-                    child: PhotoPicker()),
+                    onTap: _pickImage,
+                    child: PhotoPicker(pickedImage: _pickedImage),
+                  ),
 
                   TextFormField(
                     enabled: false,
@@ -111,18 +121,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     decoration: InputDecoration(hintText: "Password"),
                   ),
 
-                  TextFormField(
-                    validator: (String? value) {
-                      final password = value ?? '';
-                      if (password.isNotEmpty && password.length < 6) {
-                        return "Enter password at least 6 character";
-                      }
-                      return null;
-                    },
-                    controller: _confirmPasswordTEController,
-                    decoration: InputDecoration(hintText: "Confirm Password"),
-                  ),
-
                   const SizedBox(height: 8),
                   FilledButton(
                     onPressed: _onTapUpdateProfile,
@@ -137,8 +135,51 @@ class _UpdateProfileState extends State<UpdateProfile> {
     );
   }
 
+  Future<void> _pickImage() async {
+    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      _pickedImage = image;
+    }
+    setState(() {});
+  }
+
   void _onTapUpdateProfile() {
     debugPrint("profile update done");
-    if (_formKey.currentState!.validate()) {}
+    if (_formKey.currentState!.validate()) {
+      updateProfile();
+    }
+  }
+
+  Future<void> updateProfile() async {
+    _updateProfileInProgress = true;
+    setState(() {});
+
+    Map<String, dynamic> requestBody = {
+      "email": _emailTEController.text,
+      "firstName": _firstNameTEController.text.trim(),
+      "lastName": _lastNameTEController.text.trim(),
+      "mobile": _mobileTEController.text.trim(),
+    };
+
+    if (_passwordTEController.text.isNotEmpty) {
+      requestBody['password'] = _passwordTEController.text;
+    }
+    if (_pickedImage != null) {
+      Uint8List imageBytes = await _pickedImage!.readAsBytes();
+      requestBody['photo'] = jsonEncode(imageBytes);
+    }
+
+    final NetworkResponse response = await NetworkCaller.postRequest(
+      Urls.updateProfileUrl,
+      body: requestBody,
+    );
+
+    if (!mounted) return;
+    if (response.isSuccess) {
+      showSnackBar(context, "Profile has been updated!");
+      await AuthController.updateProfileData(UserModel.fromJson(requestBody));
+    } else {
+      showSnackBar(context, response.error);
+    }
   }
 }
