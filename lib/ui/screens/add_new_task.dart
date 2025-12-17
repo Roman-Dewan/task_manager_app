@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_manage_updated/data/services/network_caller.dart';
-import 'package:task_manage_updated/data/utils/urls.dart';
+import 'package:task_manage_updated/ui/providers/add_new_task_provider.dart';
 import 'package:task_manage_updated/ui/providers/new_task_list_provider.dart';
 import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
 import '../widgets/screen_background.dart';
@@ -20,7 +19,6 @@ class _AddNewTaskState extends State<AddNewTask> {
   final TextEditingController _descriptionTEController =
       TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _addNewTaskInProgress = false;
 
   @override
   Widget build(BuildContext context) {
@@ -65,13 +63,22 @@ class _AddNewTaskState extends State<AddNewTask> {
                       }
                     },
                   ),
-                  Visibility(
-                    visible: _addNewTaskInProgress == false,
-                    replacement: Center(child: CircularProgressIndicator()),
-                    child: FilledButton(
-                      onPressed: _onTapSubmitButton,
-                      child: Icon(Icons.arrow_circle_right_outlined, size: 30),
-                    ),
+
+                  Consumer<AddNewTaskProvider>(
+                    builder: (context, addNewTaskProvider, child) {
+                      return Visibility(
+                        visible:
+                            addNewTaskProvider.addNewTaskInProgress == false,
+                        replacement: Center(child: CircularProgressIndicator()),
+                        child: FilledButton(
+                          onPressed: _onTapSubmitButton,
+                          child: Icon(
+                            Icons.arrow_circle_right_outlined,
+                            size: 30,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -89,34 +96,25 @@ class _AddNewTaskState extends State<AddNewTask> {
   }
 
   Future _addNewTask() async {
-    _addNewTaskInProgress = true;
-    setState(() {});
-
-    Map<String, dynamic> requestBody = {
-      "title": _titleTEController.text.trim(),
-      "description": _descriptionTEController.text.trim(),
-      "status": "New",
-    };
-
-    final NetworkResponse response = await NetworkCaller.postRequest(
-      Urls.createNewTaskUrl,
-      body: requestBody,
+    final isSuccess = await context.read<AddNewTaskProvider>().addNewTask(
+      _titleTEController.text.trim(),
+      _descriptionTEController.text.trim(),
     );
-
-    _addNewTaskInProgress = false;
-    setState(() {});
 
     if (!mounted) {
       return;
     }
 
-    if (response.isSuccess) {
+    if (isSuccess) {
       clearData();
       FocusScope.of(context).unfocus();
       context.read<NewTaskListProvider>().getNewTaskList();
       showSnackBar(context, "added new task");
     } else {
-      showSnackBar(context, response.error);
+      showSnackBar(
+        context,
+        context.read<AddNewTaskProvider>().errorMessage ?? "Request failed",
+      );
     }
   }
 
