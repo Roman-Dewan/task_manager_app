@@ -144,11 +144,7 @@ class _SignInScreenState extends State<SignInScreen> {
       return;
     }
     if (isSuccess) {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        MainBottomNav.name,
-        (predicate) => false,
-      );
+      Navigator.pushReplacementNamed(context, MainBottomNav.name);
       showSnackBar(context, "LogIn Successful.");
     } else {
       showSnackBar(context, context.read<SignInProvider>().errorMessage ?? "Login failed! Please try again.");

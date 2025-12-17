@@ -1,11 +1,10 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../../data/services/network_caller.dart';
-import '../../data/utils/urls.dart';
+import 'package:provider/provider.dart';
+import 'package:task_manage_updated/ui/providers/sign_up_provider.dart';
 import '../widgets/screen_background.dart';
 import '../widgets/show_snackbar.dart';
-
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -21,8 +20,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _lastNameTEController = TextEditingController();
   final TextEditingController _mobileTEController = TextEditingController();
   final TextEditingController _passwordTEController = TextEditingController();
-
-  bool _signUpInProgress = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -107,13 +104,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                     decoration: InputDecoration(hintText: "Password"),
                   ),
-                  Visibility(
-                    visible: _signUpInProgress == false,
-                    replacement: Center(child: CircularProgressIndicator()),
-                    child: FilledButton(
-                      onPressed: _onTapSignUpButton,
-                      child: Icon(Icons.arrow_circle_right_outlined, size: 30),
-                    ),
+                  Consumer<SignUpProvider>(
+                    builder: (context, signUpProvider, child) {
+                      return Visibility(
+                        visible: signUpProvider.signInProgress == false,
+                        replacement: Center(child: CircularProgressIndicator()),
+                        child: FilledButton(
+                          onPressed: _onTapSignUpButton,
+                          child: Icon(
+                            Icons.arrow_circle_right_outlined,
+                            size: 30,
+                          ),
+                        ),
+                      );
+                    },
                   ),
 
                   const SizedBox(height: 8),
@@ -161,31 +165,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> _signUp() async {
-    _signUpInProgress = true;
-    setState(() {});
-    Map<String, dynamic> requestBody = {
-      "email": _emailTEController.text.trim(),
-      "firstName": _firstNameTEController.text.trim(),
-      "lastName": _lastNameTEController.text.trim(),
-      "mobile": _mobileTEController.text.trim(),
-      "password": _passwordTEController.text,
-    };
-
-    NetworkResponse response = await NetworkCaller.postRequest(
-      Urls.registrationUrl,
-      body: requestBody,
+    final isSuccess = await context.read<SignUpProvider>().signUp(
+      _emailTEController.text.trim(),
+      _firstNameTEController.text.trim(),
+      _lastNameTEController.text.trim(),
+      _mobileTEController.text.trim(),
+      _passwordTEController.text,
     );
 
     if (!mounted) {
       return;
     }
-    _signUpInProgress = false;
-    setState(() {});
-    if (response.isSuccess) {
+    if (isSuccess) {
       _clearText();
       showSnackBar(context, "Registration SuccessFull, Please Login.");
     } else {
-      showSnackBar(context, response.error);
+      showSnackBar(
+        context,
+        context.read<SignUpProvider>().errorMessage ??
+            "Registration Unsuccessful",
+      );
     }
   }
 
@@ -207,4 +206,3 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _passwordTEController.dispose();
   }
 }
-// 30 min

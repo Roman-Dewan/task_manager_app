@@ -5,6 +5,7 @@ import 'package:task_manage_updated/ui/providers/completed_task_list_provider.da
 import 'package:task_manage_updated/ui/providers/new_task_list_provider.dart';
 import 'package:task_manage_updated/ui/providers/progress_task_list_provider.dart';
 import 'package:task_manage_updated/ui/providers/sign_in_provider.dart';
+import 'package:task_manage_updated/ui/providers/sign_up_provider.dart';
 import 'screens/add_new_task.dart';
 import 'screens/forget_password_email.dart';
 import 'screens/forget_password_otp_verification.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context)=> SignInProvider()),
+        ChangeNotifierProvider(create: (context)=> SignUpProvider()),
         ChangeNotifierProvider(create: (context)=> NewTaskListProvider()),
         ChangeNotifierProvider(create: (context)=> ProgressTaskListProvider()),
         ChangeNotifierProvider(create: (context)=> CancelledTaskListProvider()),
