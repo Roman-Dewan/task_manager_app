@@ -27,11 +27,20 @@ class TMappBar extends StatelessWidget implements PreferredSizeWidget {
         },
         child: Row(
           children: [
+
             CircleAvatar(
-              child: AuthController.user!.photo.isEmpty
+              child: (AuthController.user?.photo ?? '').isEmpty
                   ? Icon(Icons.person)
-                  : Image.memory(base64Decode(AuthController.user!.photo)),
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(30),
+                      child: Image.memory(
+                        base64Decode(AuthController.user!.photo),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
             ),
+
+
             const SizedBox(width: 12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
