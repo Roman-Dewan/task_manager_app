@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:task_manage_updated/data/models/task_count_model.dart';
-import 'package:task_manage_updated/data/models/task_model.dart';
 import 'package:task_manage_updated/data/services/network_caller.dart';
 import 'package:task_manage_updated/data/utils/urls.dart';
+import 'package:task_manage_updated/ui/providers/new_task_list_provider.dart';
 import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
 import '../widgets/centered_progress_indicator.dart';
 import '../widgets/task_card.dart';
@@ -16,17 +17,14 @@ class NewTaskListScreen extends StatefulWidget {
 }
 
 class _NewTaskListScreenState extends State<NewTaskListScreen> {
-  bool _getNewTaskListInProgress = false;
-  List<TaskModel> _newTaskList = [];
-
   bool _taskCountInProgress = false;
   List<TaskCountModel> _taskCountList = [];
 
   @override
   void initState() {
-    _getNewTaskList();
-    _getTaskCountList();
     super.initState();
+    _getTaskCountList();
+    context.read<NewTaskListProvider>().getNewTaskList();
   }
 
   @override
@@ -38,30 +36,35 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
           children: [
             const SizedBox(),
             _buildTaskSummaryListView(),
-            Visibility(
-              visible: _getNewTaskListInProgress == false,
-              replacement: SizedBox(
-                height: 400,
-                child: CenteredProgressIndicator(),
-              ),
-              child: ListView.separated(
-                shrinkWrap: true,
-                primary: false,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: _newTaskList.length,
-                itemBuilder: (context, index) {
-                  return TaskCard(
-                    taskModel: _newTaskList[index],
-                    refreshList: () {
-                      _getNewTaskList();
-                      _getTaskCountList();
+            Consumer<NewTaskListProvider>(
+              builder: (context, newTaskListProvider, child) {
+                return Visibility(
+                  visible:
+                      newTaskListProvider.getNewTaskListInProgress == false,
+                  replacement: SizedBox(
+                    height: 400,
+                    child: CenteredProgressIndicator(),
+                  ),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    primary: false,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: newTaskListProvider.newTaskList.length,
+                    itemBuilder: (context, index) {
+                      return TaskCard(
+                        taskModel: newTaskListProvider.newTaskList[index],
+                        refreshList: () {
+                          newTaskListProvider.getNewTaskList();
+                          _getTaskCountList();
+                        },
+                      );
                     },
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return SizedBox(height: 8);
-                },
-              ),
+                    separatorBuilder: (context, index) {
+                      return SizedBox(height: 8);
+                    },
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -118,31 +121,6 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
         ),
       ),
     );
-  }
-
-  // new task list
-  Future<void> _getNewTaskList() async {
-    _getNewTaskListInProgress = true;
-    setState(() {});
-    final NetworkResponse response = await NetworkCaller.getRequest(
-      Urls.newTaskListUrl,
-    );
-
-    if (!mounted) return;
-    if (response.isSuccess) {
-      List<TaskModel> list = [];
-
-      for (Map<String, dynamic> jsonData in response.body['data']) {
-        list.add(TaskModel.fromJson(jsonData));
-      }
-
-      _newTaskList = list;
-    } else {
-      showSnackBar(context, response.error);
-    }
-
-    _getNewTaskListInProgress = false;
-    setState(() {});
   }
 
   // task value count

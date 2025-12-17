@@ -23,107 +23,103 @@ class _SignInScreenState extends State<SignInScreen> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final SignInProvider _signInProvider = SignInProvider();
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => SignInProvider(),
-      child: Scaffold(
-        body: ScreenBackground(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(40.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  spacing: 8,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 64),
-                    Text(
-                      "Get Started With",
-                      style: Theme.of(context).textTheme.headlineLarge,
-                    ),
-                    const SizedBox(height: 24),
-                    TextFormField(
-                      controller: _emailTEController,
-                      validator: (String? value) {
-                        if (value?.trim().isEmpty ?? true) {
-                          return "Enter your email";
-                        }
-                        if (EmailValidator.validate(value!) == false) {
-                          return "Enter valid email address";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(hintText: "Email"),
-                    ),
-                    TextFormField(
-                      controller: _passwordTEController,
-                      validator: (String? value){
-                        if(value?.isEmpty ?? true){
-                          return "Enter your password";
-                        }
-                        if((value!.length) < 6){
-                          return "Password must be at least 6 characters";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(hintText: "Password"),
-                    ),
-                    const SizedBox(height: 12),
-      
-                    Consumer<SignInProvider>(
-                      builder: (context, signInProvider, child) {
-                        return Visibility(
-                          visible: signInProvider.signInProgress == false,
-                          replacement: Center(child: CircularProgressIndicator()),
-                          child: FilledButton(
-                            onPressed: _signInButton,
-                            child: Icon(
-                              Icons.arrow_circle_right_outlined,
-                              size: 30,
-                            ),
+    return Scaffold(
+      body: ScreenBackground(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(40.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                spacing: 8,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 64),
+                  Text(
+                    "Get Started With",
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  const SizedBox(height: 24),
+                  TextFormField(
+                    controller: _emailTEController,
+                    validator: (String? value) {
+                      if (value?.trim().isEmpty ?? true) {
+                        return "Enter your email";
+                      }
+                      if (EmailValidator.validate(value!) == false) {
+                        return "Enter valid email address";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(hintText: "Email"),
+                  ),
+
+                  TextFormField(
+                    controller: _passwordTEController,
+                    validator: (String? value){
+                      if(value?.isEmpty ?? true){
+                        return "Enter your password";
+                      }
+                      if((value!.length) < 6){
+                        return "Password must be at least 6 characters";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(hintText: "Password"),
+                  ),
+
+                  const SizedBox(height: 12),
+    
+                  Consumer<SignInProvider>(
+                    builder: (context, signInProvider, child) {
+                      return Visibility(
+                        visible: signInProvider.signInProgress == false,
+                        replacement: Center(child: CircularProgressIndicator()),
+                        child: FilledButton(
+                          onPressed: _signInButton,
+                          child: Icon(
+                            Icons.arrow_circle_right_outlined,
+                            size: 30,
                           ),
-                          
-                        );
-                        
-                      },
-                    ),
-      
-                    const SizedBox(height: 24),
-      
-                    Center(
-                      child: Column(
-                        children: [
-                          TextButton(
-                            onPressed: _forgetButton,
-                            child: Text("Forget Password?"),
-                          ),
-                          RichText(
-                            text: TextSpan(
-                              style: TextStyle(color: Colors.black),
-                              text: "Don't have an account? ",
-      
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: "sign up",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green,
-                                  ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = _signUpButton,
+                        ),
+                      );
+                    },
+                  ),
+    
+                  const SizedBox(height: 24),
+    
+                  Center(
+                    child: Column(
+                      children: [
+                        TextButton(
+                          onPressed: _forgetButton,
+                          child: Text("Forget Password?"),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(color: Colors.black),
+                            text: "Don't have an account? ",
+    
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: "sign up",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
                                 ),
-                              ],
-                            ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = _signUpButton,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -140,7 +136,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Future<void> signIn() async {
-    final isSuccess = await _signInProvider.signIn(
+    final isSuccess = await context.read<SignInProvider>().signIn(
       _emailTEController.text.trim(),
       _passwordTEController.text,
     );
@@ -155,7 +151,7 @@ class _SignInScreenState extends State<SignInScreen> {
       );
       showSnackBar(context, "LogIn Successful.");
     } else {
-      showSnackBar(context, _signInProvider.errorMessage!);
+      showSnackBar(context, context.read<SignInProvider>().errorMessage ?? "Login failed! Please try again.");
     }
   }
 

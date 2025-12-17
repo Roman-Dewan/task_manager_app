@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:task_manage_updated/data/services/network_caller.dart';
 import 'package:task_manage_updated/data/utils/urls.dart';
+import 'package:task_manage_updated/ui/providers/new_task_list_provider.dart';
 import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
 import '../widgets/screen_background.dart';
 import '../widgets/tm_app_bar.dart';
@@ -111,6 +113,7 @@ class _AddNewTaskState extends State<AddNewTask> {
     if (response.isSuccess) {
       clearData();
       FocusScope.of(context).unfocus();
+      context.read<NewTaskListProvider>().getNewTaskList();
       showSnackBar(context, "added new task");
     } else {
       showSnackBar(context, response.error);
