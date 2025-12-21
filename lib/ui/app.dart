@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:task_manage_updated/ui/providers/add_new_task_provider.dart';
 import 'package:task_manage_updated/ui/providers/cancelled_task_list_provider.dart';
 import 'package:task_manage_updated/ui/providers/completed_task_list_provider.dart';
 import 'package:task_manage_updated/ui/providers/new_task_list_provider.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=> ProgressTaskListProvider()),
         ChangeNotifierProvider(create: (context)=> CancelledTaskListProvider()),
         ChangeNotifierProvider(create: (context)=> CompletedTaskListProvider()),
+        ChangeNotifierProvider(create: (context)=> AddNewTaskProvider()),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
