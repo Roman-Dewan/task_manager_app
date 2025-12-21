@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_manage_updated/data/models/task_count_model.dart';
-import 'package:task_manage_updated/data/services/network_caller.dart';
-import 'package:task_manage_updated/data/utils/urls.dart';
 import 'package:task_manage_updated/ui/providers/new_task_list_provider.dart';
+import 'package:task_manage_updated/ui/providers/task_count_provider.dart';
 import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
 import '../../widgets/centered_progress_indicator.dart';
 import '../../widgets/task_card.dart';
@@ -17,9 +15,6 @@ class NewTaskListScreen extends StatefulWidget {
 }
 
 class _NewTaskListScreenState extends State<NewTaskListScreen> {
-  bool _taskCountInProgress = false;
-  List<TaskCountModel> _taskCountList = [];
-
   @override
   void initState() {
     super.initState();
@@ -86,68 +81,62 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
   Widget _buildTaskSummaryListView() {
     return SizedBox(
       height: 60,
-      child: Visibility(
-        visible: _taskCountInProgress == false,
-        replacement: CenteredProgressIndicator(),
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: _taskCountList.length,
-          itemBuilder: (context, index) {
-            return Card(
-              color: Colors.white,
-              elevation: 0,
-              margin: EdgeInsets.only(left: 8),
+      child: Consumer<TaskCountProvider>(
+        builder: (context, taskCountProvider, child) {
+          return Visibility(
+            visible: taskCountProvider.inProgress == false,
+            replacement: CenteredProgressIndicator(),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: taskCountProvider.taskCountList.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  color: Colors.white,
+                  elevation: 0,
+                  margin: EdgeInsets.only(left: 8),
 
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      _taskCountList[index].sum.toString(),
-                      style: Theme.of(
-                        context,
-                      ).textTheme.titleMedium?.copyWith(color: Colors.black),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
                     ),
-                    Text(
-                      _taskCountList[index].id,
-                      style: Theme.of(context).textTheme.labelLarge,
+                    child: Column(
+                      children: [
+                        Text(
+                          taskCountProvider.taskCountList[index].sum.toString(),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(color: Colors.black),
+                        ),
+                        Text(
+                          taskCountProvider.taskCountList[index].id,
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }
 
   // task value count
   Future<void> _getTaskCountList() async {
-    _taskCountInProgress = true;
-
-    setState(() {});
-    final NetworkResponse response = await NetworkCaller.getRequest(
-      Urls.taskCountUrl,
-    );
+    final bool isSuccess = await context
+        .read<TaskCountProvider>()
+        .taskCountProvider();
 
     if (!mounted) return;
-    if (response.isSuccess) {
-      List<TaskCountModel> list = [];
-
-      for (Map<String, dynamic> jsonData in response.body['data']) {
-        list.add(TaskCountModel.fromJson(jsonData));
-      }
-
-      _taskCountList = list;
+    if (isSuccess) {
     } else {
-      showSnackBar(context, response.error);
+      showSnackBar(
+        context,
+        context.read<TaskCountProvider>().errorMessage ??
+            "Something went wrong",
+      );
     }
-
-    _taskCountInProgress = false;
-    setState(() {});
   }
 }
