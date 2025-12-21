@@ -19,6 +19,8 @@ class Urls {
   static String forgetOtpVerifyUrl(String email, String otp) =>
       "$_basUrl/RecoverVerifyOtp/$email/$otp";
 
+  static String resetPasswordUrl = "$_basUrl/RecoverResetPassword";
+
   static String updateTaskUrl(String taskId, String status) =>
       "$_basUrl/updateTaskStatus/$taskId/$status";
 

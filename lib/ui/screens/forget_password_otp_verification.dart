@@ -150,7 +150,10 @@ class _SignInScreenState extends State<OtpVerification> {
     setState(() {});
 
     if (response.isSuccess) {
-      Navigator.pushReplacementNamed(context, ResetPassword.name, arguments: {email, otp});
+      Navigator.pushReplacementNamed(context, ResetPassword.name, arguments: {
+        "email" : email,
+        "otp" : otp
+      });
       debugPrint("Click on OTP verify button");
     } else {
       showSnackBar(context, response.error);
