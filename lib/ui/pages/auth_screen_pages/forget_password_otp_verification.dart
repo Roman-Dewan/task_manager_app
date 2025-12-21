@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:task_manage_updated/data/services/network_caller.dart';
-import 'package:task_manage_updated/data/utils/urls.dart';
+import 'package:provider/provider.dart';
+import 'package:task_manage_updated/ui/providers/forget_password_otp_verify_provider.dart';
 import 'package:task_manage_updated/ui/widgets/centered_progress_indicator.dart';
 import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
 import '../../widgets/screen_background.dart';
@@ -22,8 +22,6 @@ class _SignInScreenState extends State<OtpVerification> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? email;
-
-  bool _inProgress = false;
   @override
   Widget build(BuildContext context) {
     email = ModalRoute.of(context)?.settings.arguments as String?;
@@ -76,16 +74,20 @@ class _SignInScreenState extends State<OtpVerification> {
                     },
                   ),
 
-                  Visibility(
-                    visible: _inProgress == false,
-                    replacement: CenteredProgressIndicator(),
-                    child: FilledButton(
-                      onPressed: _otpVerificationButton,
-                      child: Text(
-                        "Verify",
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
+                  Consumer<OtpVerifyProvider>(
+                    builder: (context, otpVerifyProvider, child) {
+                      return Visibility(
+                        visible: otpVerifyProvider.inProgress == false,
+                        replacement: CenteredProgressIndicator(),
+                        child: FilledButton(
+                          onPressed: _otpVerificationButton,
+                          child: Text(
+                            "Verify",
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 24),
                   Center(
@@ -134,29 +136,29 @@ class _SignInScreenState extends State<OtpVerification> {
   }
 
   Future<void> _otpVerify() async {
-    _inProgress = true;
-    setState(() {});
-
     final otp = _otpTEController.text.trim();
     debugPrint("email is ::: $email");
     debugPrint("otp is ::: $otp");
 
-    final NetworkResponse response = await NetworkCaller.getRequest(
-      Urls.forgetOtpVerifyUrl(email.toString(), otp),
+    final isSuccess = await context.read<OtpVerifyProvider>().otpVerifyprovider(
+      email.toString(),
+      otp,
     );
     if (!mounted) return;
 
-    _inProgress = false;
-    setState(() {});
-
-    if (response.isSuccess) {
-      Navigator.pushReplacementNamed(context, ResetPassword.name, arguments: {
-        "email" : email,
-        "otp" : otp
-      });
+    if (isSuccess) {
+      Navigator.pushReplacementNamed(
+        context,
+        ResetPassword.name,
+        arguments: {"email": email, "otp": otp},
+      );
       debugPrint("Click on OTP verify button");
     } else {
-      showSnackBar(context, response.error);
+      showSnackBar(
+        context,
+        context.read<OtpVerifyProvider>().errorMessage ??
+            "Please enter valid OTP",
+      );
     }
   }
 }
