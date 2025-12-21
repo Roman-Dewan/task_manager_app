@@ -4,7 +4,7 @@ import 'package:task_manage_updated/data/services/network_caller.dart';
 import 'package:task_manage_updated/data/utils/urls.dart';
 import 'package:task_manage_updated/ui/widgets/centered_progress_indicator.dart';
 import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
-import '../widgets/screen_background.dart';
+import '../../widgets/screen_background.dart';
 import 'sign_in_screen.dart';
 
 class ResetPassword extends StatefulWidget {

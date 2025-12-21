@@ -3,9 +3,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:task_manage_updated/ui/controller/auth_controller.dart';
-import 'package:task_manage_updated/ui/screens/sign_in_screen.dart';
+import 'package:task_manage_updated/ui/pages/auth_screen_pages/sign_in_screen.dart';
 import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
-import '../screens/update_profile.dart';
+import '../pages/activity_pages/update_profile.dart';
 
 class TMappBar extends StatelessWidget implements PreferredSizeWidget {
   const TMappBar({super.key, this.fromUpdateProfile = false});

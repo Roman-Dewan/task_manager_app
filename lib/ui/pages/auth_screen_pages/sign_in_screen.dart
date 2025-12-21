@@ -3,10 +3,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manage_updated/ui/providers/sign_in_provider.dart';
-import '../widgets/screen_background.dart';
-import '../widgets/show_snackbar.dart';
+import '../../widgets/screen_background.dart';
+import '../../widgets/show_snackbar.dart';
 import 'forget_password_email.dart';
-import 'main_bottom_nav_holder_screen.dart';
+import '../main_pages/main_bottom_nav_holder_screen.dart';
 import 'sign_up_screen.dart';
 
 class SignInScreen extends StatefulWidget {

@@ -3,8 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manage_updated/ui/providers/sign_up_provider.dart';
-import '../widgets/screen_background.dart';
-import '../widgets/show_snackbar.dart';
+import '../../widgets/screen_background.dart';
+import '../../widgets/show_snackbar.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

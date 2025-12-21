@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:task_manage_updated/ui/providers/add_new_task_provider.dart';
 import 'package:task_manage_updated/ui/providers/new_task_list_provider.dart';
 import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
-import '../widgets/screen_background.dart';
-import '../widgets/tm_app_bar.dart';
+import '../../widgets/screen_background.dart';
+import '../../widgets/tm_app_bar.dart';
 
 class AddNewTask extends StatefulWidget {
   const AddNewTask({super.key});

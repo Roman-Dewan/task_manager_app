@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manage_updated/ui/providers/completed_task_list_provider.dart';
-import '../widgets/centered_progress_indicator.dart';
-import '../widgets/task_card.dart';
+import '../../widgets/centered_progress_indicator.dart';
+import '../../widgets/task_card.dart';
 
 class CompletedTaskListScreen extends StatefulWidget {
   const CompletedTaskListScreen({super.key});

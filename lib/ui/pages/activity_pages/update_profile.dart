@@ -9,9 +9,9 @@ import 'package:task_manage_updated/data/utils/urls.dart';
 import 'package:task_manage_updated/ui/controller/auth_controller.dart';
 import 'package:task_manage_updated/ui/widgets/centered_progress_indicator.dart';
 import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
-import '../widgets/photo_picker.dart';
-import '../widgets/screen_background.dart';
-import '../widgets/tm_app_bar.dart';
+import '../../widgets/photo_picker.dart';
+import '../../widgets/screen_background.dart';
+import '../../widgets/tm_app_bar.dart';
 
 class UpdateProfile extends StatefulWidget {
   const UpdateProfile({super.key});

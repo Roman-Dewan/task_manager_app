@@ -5,9 +5,9 @@ import 'package:task_manage_updated/data/services/network_caller.dart';
 import 'package:task_manage_updated/data/utils/urls.dart';
 import 'package:task_manage_updated/ui/providers/new_task_list_provider.dart';
 import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
-import '../widgets/centered_progress_indicator.dart';
-import '../widgets/task_card.dart';
-import 'add_new_task.dart';
+import '../../widgets/centered_progress_indicator.dart';
+import '../../widgets/task_card.dart';
+import '../activity_pages/add_new_task.dart';
 
 class NewTaskListScreen extends StatefulWidget {
   const NewTaskListScreen({super.key});

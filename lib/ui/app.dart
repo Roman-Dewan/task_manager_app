@@ -6,15 +6,15 @@ import 'package:task_manage_updated/ui/providers/new_task_list_provider.dart';
 import 'package:task_manage_updated/ui/providers/progress_task_list_provider.dart';
 import 'package:task_manage_updated/ui/providers/sign_in_provider.dart';
 import 'package:task_manage_updated/ui/providers/sign_up_provider.dart';
-import 'screens/add_new_task.dart';
-import 'screens/forget_password_email.dart';
-import 'screens/forget_password_otp_verification.dart';
-import 'screens/main_bottom_nav_holder_screen.dart';
-import 'screens/reset_password.dart';
-import 'screens/sign_in_screen.dart';
-import 'screens/sign_up_screen.dart';
-import 'screens/splash_screen.dart';
-import 'screens/update_profile.dart';
+import 'pages/activity_pages/add_new_task.dart';
+import 'pages/auth_screen_pages/forget_password_email.dart';
+import 'pages/auth_screen_pages/forget_password_otp_verification.dart';
+import 'pages/main_pages/main_bottom_nav_holder_screen.dart';
+import 'pages/auth_screen_pages/reset_password.dart';
+import 'pages/auth_screen_pages/sign_in_screen.dart';
+import 'pages/auth_screen_pages/sign_up_screen.dart';
+import 'pages/activity_pages/splash_screen.dart';
+import 'pages/activity_pages/update_profile.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
