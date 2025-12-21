@@ -15,7 +15,10 @@ class _ProgressTaskListScreenState extends State<ProgressTaskListScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ProgressTaskListProvider>().getProgressTaskList();
+    // context.read<ProgressTaskListProvider>().getProgressTaskList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+    Provider.of<ProgressTaskListProvider>(context, listen: false).getProgressTaskList();
+  });
   }
 
   @override

@@ -16,7 +16,10 @@ class _CompletedTaskListScreenState extends State<CompletedTaskListScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<CompletedTaskListProvider>().getCompletedTaskList();
+    // context.read<CompletedTaskListProvider>().getCompletedTaskList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+    Provider.of<CompletedTaskListProvider>(context, listen: false).getCompletedTaskList();
+  });
   }
 
   @override

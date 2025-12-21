@@ -23,8 +23,6 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
   @override
   void initState() {
     super.initState();
-    // _getTaskCountList();
-    // context.read<NewTaskListProvider>().getNewTaskList();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _getTaskCountList();
       context.read<NewTaskListProvider>().getNewTaskList();

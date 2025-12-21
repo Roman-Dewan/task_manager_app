@@ -15,7 +15,10 @@ class _CancelledTaskListScreenState extends State<CancelledTaskListScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<CancelledTaskListProvider>().getCancelledTaskList();
+    // context.read<CancelledTaskListProvider>().getCancelledTaskList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+    Provider.of<CancelledTaskListProvider>(context, listen: false).getCancelledTaskList();
+  });
   }
 
   @override
