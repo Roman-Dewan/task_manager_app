@@ -26,8 +26,6 @@ class TaskModel {
       description: jsonData["description"],
       status: jsonData["status"],
       email: jsonData["email"],
-      // createdDate: DateFormat.yMMMMEEEEd().format(jsonData["createdDate"]),
-      // createdDate: jsonData["createdDate"]
       createdDate: DateFormat().format(DateTime.parse(jsonData["createdDate"])),
     );
   }

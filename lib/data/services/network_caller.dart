@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:task_manage_updated/ui/app.dart';
 import 'package:task_manage_updated/ui/controller/auth_controller.dart';
-// import 'package:task_manage_updated/ui/screens/new_task_list_screen.dart';
 import 'package:task_manage_updated/ui/pages/auth_screen_pages/sign_in_screen.dart';
 
 class NetworkCaller {

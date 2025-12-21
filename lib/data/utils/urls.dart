@@ -15,7 +15,7 @@ class Urls {
 
   static String forgetPasswordEmailUrl(String email) =>
       "$_basUrl/RecoverVerifyEmail/$email";
-      // /RecoverVerifyOtp/email@gmail.com/190828
+
   static String forgetOtpVerifyUrl(String email, String otp) =>
       "$_basUrl/RecoverVerifyOtp/$email/$otp";
 
