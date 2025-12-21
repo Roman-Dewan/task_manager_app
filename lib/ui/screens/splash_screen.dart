@@ -48,6 +48,10 @@ class _SplashScreenState extends State<SplashScreen> {
             AssetPath.logo,
             height: 120,
             width: 120,
+            colorFilter: ColorFilter.mode(
+            Colors.green.shade500, 
+            BlendMode.srcIn,
+          ),
           ),
         ),
       ),
