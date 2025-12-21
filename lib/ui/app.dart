@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:task_manage_updated/ui/providers/add_new_task_provider.dart';
 import 'package:task_manage_updated/ui/providers/cancelled_task_list_provider.dart';
 import 'package:task_manage_updated/ui/providers/completed_task_list_provider.dart';
+import 'package:task_manage_updated/ui/providers/forget_password_email_provider.dart';
 import 'package:task_manage_updated/ui/providers/new_task_list_provider.dart';
 import 'package:task_manage_updated/ui/providers/progress_task_list_provider.dart';
 import 'package:task_manage_updated/ui/providers/sign_in_provider.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=> CancelledTaskListProvider()),
         ChangeNotifierProvider(create: (context)=> CompletedTaskListProvider()),
         ChangeNotifierProvider(create: (context)=> AddNewTaskProvider()),
+        ChangeNotifierProvider(create: (context)=> ForgetPasswordEmailProvider()),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,

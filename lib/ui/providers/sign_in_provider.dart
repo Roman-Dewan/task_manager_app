@@ -12,7 +12,7 @@ class SignInProvider extends ChangeNotifier {
   bool get signInProgress => _signInProgress;
   String? get errorMessage => _errorMessage;
 
-  Future<bool> signIn(String email, String password) async {
+  Future<bool> signInProvider(String email, String password) async {
     bool isSuccess = false;
 
     _signInProgress = true;

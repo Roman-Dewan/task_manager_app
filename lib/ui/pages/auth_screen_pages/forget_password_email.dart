@@ -1,8 +1,8 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:task_manage_updated/data/services/network_caller.dart';
-import 'package:task_manage_updated/data/utils/urls.dart';
+import 'package:provider/provider.dart';
+import 'package:task_manage_updated/ui/providers/forget_password_email_provider.dart';
 import 'package:task_manage_updated/ui/widgets/centered_progress_indicator.dart';
 import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
 import '../../widgets/screen_background.dart';
@@ -20,7 +20,6 @@ class ForgetPasswordEmail extends StatefulWidget {
 class _SignInScreenState extends State<ForgetPasswordEmail> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailTEController = TextEditingController();
-  bool _forgetPasswordInProgress = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,13 +56,20 @@ class _SignInScreenState extends State<ForgetPasswordEmail> {
                     },
                     decoration: InputDecoration(hintText: "Email"),
                   ),
-                  Visibility(
-                    visible: _forgetPasswordInProgress == false,
-                    replacement: CenteredProgressIndicator(),
-                    child: FilledButton(
-                      onPressed: _forgetPasswordEmailButton,
-                      child: Icon(Icons.arrow_circle_right_outlined, size: 30),
-                    ),
+                  Consumer<ForgetPasswordEmailProvider>(
+                    builder: (context, forgetPassword, child) {
+                      return Visibility(
+                        visible: forgetPassword.inProgress == false,
+                        replacement: CenteredProgressIndicator(),
+                        child: FilledButton(
+                          onPressed: _forgetPasswordEmailButton,
+                          child: Icon(
+                            Icons.arrow_circle_right_outlined,
+                            size: 30,
+                          ),
+                        ),
+                      );
+                    },
                   ),
 
                   const SizedBox(height: 24),
@@ -113,25 +119,23 @@ class _SignInScreenState extends State<ForgetPasswordEmail> {
   }
 
   Future<void> _forgetPassword() async {
-    _forgetPasswordInProgress = true;
-    setState(() {});
-
     final email = _emailTEController.text.trim();
     debugPrint("Email is :: $email");
-    NetworkResponse response = await NetworkCaller.getRequest(
-      Urls.forgetPasswordEmailUrl(email),
-    );
 
-    _forgetPasswordInProgress = false;
-    setState(() {});
+    final isSuccess = await context
+        .read<ForgetPasswordEmailProvider>()
+        .forgetPasswordProvider(email);
 
     if (!mounted) return;
-
-    if (response.isSuccess) {
+    if (isSuccess) {
       debugPrint("succesful");
       Navigator.pushNamed(context, OtpVerification.name, arguments: email);
     } else {
-      showSnackBar(context, response.error);
+      showSnackBar(
+        context,
+        context.read<ForgetPasswordEmailProvider>().errorMessage ??
+            "Insert a valid email",
+      );
     }
   }
 }

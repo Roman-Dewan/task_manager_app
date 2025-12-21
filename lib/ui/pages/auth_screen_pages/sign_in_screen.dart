@@ -136,7 +136,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Future<void> signIn() async {
-    final isSuccess = await context.read<SignInProvider>().signIn(
+    final isSuccess = await context.read<SignInProvider>().signInProvider(
       _emailTEController.text.trim(),
       _passwordTEController.text,
     );
