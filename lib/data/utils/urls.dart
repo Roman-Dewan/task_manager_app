@@ -13,8 +13,11 @@ class Urls {
   static const String taskCountUrl = "$_basUrl/taskStatusCount";
   static const String updateProfileUrl = "$_basUrl/ProfileUpdate";
 
-  static String forgetPasswordEmail(String email) =>
+  static String forgetPasswordEmailUrl(String email) =>
       "$_basUrl/RecoverVerifyEmail/$email";
+      // /RecoverVerifyOtp/email@gmail.com/190828
+  static String forgetOtpVerifyUrl(String email, String otp) =>
+      "$_basUrl/RecoverVerifyOtp/$email/$otp";
 
   static String updateTaskUrl(String taskId, String status) =>
       "$_basUrl/updateTaskStatus/$taskId/$status";

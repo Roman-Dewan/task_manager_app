@@ -109,7 +109,7 @@ class _SignInScreenState extends State<ForgetPasswordEmail> {
     if (_formKey.currentState!.validate()) {
       _forgetPassword();
     }
-    debugPrint("forget email gotted");
+    debugPrint("click on forget email button");
   }
 
   Future<void> _forgetPassword() async {
@@ -117,8 +117,9 @@ class _SignInScreenState extends State<ForgetPasswordEmail> {
     setState(() {});
 
     final email = _emailTEController.text.trim();
+    debugPrint("Email is :: $email");
     NetworkResponse response = await NetworkCaller.getRequest(
-      Urls.forgetPasswordEmail(email),
+      Urls.forgetPasswordEmailUrl(email),
     );
 
     _forgetPasswordInProgress = false;
@@ -127,6 +128,7 @@ class _SignInScreenState extends State<ForgetPasswordEmail> {
     if (!mounted) return;
 
     if (response.isSuccess) {
+      debugPrint("succesful");
       Navigator.pushNamed(context, OtpVerification.name, arguments: email);
     } else {
       showSnackBar(context, response.error);
