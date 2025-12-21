@@ -30,22 +30,3 @@ class OtpVerifyProvider extends ChangeNotifier {
   }
 
 }
-
-// final NetworkResponse response = await NetworkCaller.getRequest(
-//       Urls.forgetOtpVerifyUrl(email.toString(), otp),
-//     );
-//     if (!mounted) return;
-
-//     _inProgress = false;
-//     setState(() {});
-
-//     if (response.isSuccess) {
-//       Navigator.pushReplacementNamed(context, ResetPassword.name, arguments: {
-//         "email" : email,
-//         "otp" : otp
-//       });
-//       debugPrint("Click on OTP verify button");
-//     } else {
-//       showSnackBar(context, response.error);
-//     }
-//   }
