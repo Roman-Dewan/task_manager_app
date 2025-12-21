@@ -7,6 +7,7 @@ import 'package:task_manage_updated/ui/providers/forget_password_email_provider.
 import 'package:task_manage_updated/ui/providers/forget_password_otp_verify_provider.dart';
 import 'package:task_manage_updated/ui/providers/new_task_list_provider.dart';
 import 'package:task_manage_updated/ui/providers/progress_task_list_provider.dart';
+import 'package:task_manage_updated/ui/providers/reset_password_provider.dart';
 import 'package:task_manage_updated/ui/providers/sign_in_provider.dart';
 import 'package:task_manage_updated/ui/providers/sign_up_provider.dart';
 import 'pages/activity_pages/add_new_task.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=> AddNewTaskProvider()),
         ChangeNotifierProvider(create: (context)=> ForgetPasswordEmailProvider()),
         ChangeNotifierProvider(create: (context)=> OtpVerifyProvider()),
+        ChangeNotifierProvider(create: (context)=> ResetPasswordProvider()),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,

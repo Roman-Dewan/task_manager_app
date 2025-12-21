@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:task_manage_updated/data/services/network_caller.dart';
-import 'package:task_manage_updated/data/utils/urls.dart';
+import 'package:provider/provider.dart';
+import 'package:task_manage_updated/ui/providers/reset_password_provider.dart';
 import 'package:task_manage_updated/ui/widgets/centered_progress_indicator.dart';
 import 'package:task_manage_updated/ui/widgets/show_snackbar.dart';
 import '../../widgets/screen_background.dart';
@@ -16,7 +16,6 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<ResetPassword> {
-  bool _inProgress = false;
   String? email;
   String? otp;
   final TextEditingController _passrodTEController = TextEditingController();
@@ -64,16 +63,20 @@ class _SignInScreenState extends State<ResetPassword> {
                     controller: _confirmPassrodTEController,
                     decoration: InputDecoration(hintText: "Confirm Password"),
                   ),
-                  Visibility(
-                    visible: _inProgress == false,
-                    replacement: CenteredProgressIndicator(),
-                    child: FilledButton(
-                      onPressed: _onTapConfirmButton,
-                      child: Text(
-                        "Confirm",
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
+                  Consumer<ResetPasswordProvider>(
+                    builder: (context, resetPasswordProvider, child) {
+                      return Visibility(
+                        visible: resetPasswordProvider.inProgress == false,
+                        replacement: CenteredProgressIndicator(),
+                        child: FilledButton(
+                          onPressed: _onTapConfirmButton,
+                          child: Text(
+                            "Confirm",
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ),
+                      );
+                    },
                   ),
 
                   const SizedBox(height: 24),
@@ -137,31 +140,29 @@ class _SignInScreenState extends State<ResetPassword> {
       showSnackBar(context, "Password don't match");
       return;
     }
-    _inProgress = true;
-    setState(() {});
+    final String password = _passrodTEController.text;
 
-    Map<String, dynamic> requestBody = {
-      "email": email,
-      "OTP": otp,
-      "password": _passrodTEController.text,
-    };
-    NetworkResponse response = await NetworkCaller.postRequest(
-      Urls.resetPasswordUrl,
-      body: requestBody,
-    );
-
+    final isSuccess = await context
+        .read<ResetPasswordProvider>()
+        .resetPasswordProvider(email.toString(), otp.toString(), password);
     if (!mounted) return;
 
-    _inProgress = false;
-    setState(() {});
-    if (response.isSuccess) {
-      Navigator.pushNamedAndRemoveUntil(context, SignInScreen.name, (predicate)=> false);
+    if (isSuccess) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        SignInScreen.name,
+        (predicate) => false,
+      );
       showSnackBar(context, "Password Reset done");
       debugPrint("otp :: $otp");
       debugPrint("email :: $email");
       debugPrint("password :: ${_passrodTEController.text}");
     } else {
-      showSnackBar(context, response.error);
+      showSnackBar(
+        context,
+        context.read<ResetPasswordProvider>().errorMessage ??
+            "Something went wrong",
+      );
     }
   }
 }
